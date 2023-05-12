@@ -20,7 +20,7 @@ const Product = () => {
 
   updateValuePrice(product_Api.price);
 
-  function abyss(i) {
+  function ButtonOnClick(i) {
     setButtonId(i);
     setcolorButton("black");
   }
@@ -34,7 +34,9 @@ const Product = () => {
   };
 
   return (
-    <>
+    <div className="mainContainer0">
+
+    
       <div className="productContainer">
         <div className="productSection1 productBox">
           <img src={product_Api.image} alt="" />
@@ -71,7 +73,7 @@ const Product = () => {
                 return (
                   <button
                     style={{ backgroundColor: product_Api.colors[i].hex_value }}
-                    onClick={() => abyss(i)}
+                    onClick={() => ButtonOnClick(i)}
                   ></button>
                 );
               })}
@@ -98,7 +100,7 @@ const Product = () => {
       </div>
 
       <Outlet />
-    </>
+    </div>
   );
 };
 

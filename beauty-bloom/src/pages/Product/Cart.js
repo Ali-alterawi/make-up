@@ -1,75 +1,103 @@
 import React from "react";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import "./Cart.css";
 
 import { useContext } from "react";
 import { UserContext } from "./ProductContext";
+import { Link } from "react-router-dom";
+let numarray0=[]
+let newArrPriceTotal=[]
 
 const Cart = () => {
-  const { product_Api, updateValueProduct_Api } = useContext(UserContext);
-  const { imgButton, updateValueImgButton } = useContext(UserContext);
-  const { Price, updateValuePrice } = useContext(UserContext);
-  const { Quantity, updateValueQuantity } = useContext(UserContext);
+
   const {myArray,updateApi1 } = useContext(UserContext);
-
-  updateValuePrice(Number(product_Api.price));
-
-
-  let numarray=[];
-
-  const [price, setprice] = useState(Number(Price));
-  const [price000, setprice000] = useState([]);
-  const [priceTotal, setpriceTotal] = useState(1);
-  const [priceTotal00, setpriceTotal00] = useState([]);
-
-  function changeNum (i,num,pr){
-
-  numarray[i]=Number(num);
-
-  setpriceTotal00(()=>{
-    return numarray
-  })
-
+  const [Quantity, setQuantity] = useState([]);
+  const [priceTotal, setPriceTotal] = useState([]);
+  const [priceTotalNum, setPriceTotalNum] = useState(0);
  
-  setprice000(()=>{
-    return numarray
-  })
-
-     let sum=0 ;
-    price000.map(value => {
-      sum += Number(value);
+  useEffect(() => {
+     numarray0=myArray.map(() => {
+      return 1
+    });
+    newArrPriceTotal=myArray.map((e) => {
+      return Number(e.price)
     });
 
-      setpriceTotal(sum)
  
-      
+
+    let numarray = myArray.map(() => {
+      return 1
+    });
+
+    let numarrayprice = myArray.map((e) => {
+      return Number(e.price)
+    });
+
+    setQuantity(()=>{
+      return numarray
+    })
+
+    setPriceTotal(()=>{
+      return numarrayprice
+    })
+
+
+
+  
+   
+    let sum=0
+    newArrPriceTotal.map((element)=>{
+     sum += element    
+    })
+    setPriceTotalNum(sum)
+
     
-     let pricetotal = price000.map(value => {
-        return Number(value) * Number(myArray[i].price)
-      });
-      
-      setpriceTotal00(()=>{
-        return pricetotal
-      })
+  },[]);
+ 
+
+  function updateFieldChanged(ev,i,pr) {
+
+     let newArrQuantity = [...Quantity]; 
+     newArrQuantity[i] = Number( ev.target.value);
+     setQuantity(()=> {return newArrQuantity});
+
+     numarray0[i] = Number( ev.target.value);
+
+     newArrPriceTotal[i] = Number(ev.target.value)*Number(pr);
+     setPriceTotal(()=> {return newArrPriceTotal});
+
+     
+     let sum=0
+     let newArrPriceTotalNum =[...priceTotal];
+     
+     newArrPriceTotalNum.map((element)=>{
+      sum += element    
+     })
+     setPriceTotalNum(()=> {return sum})
+
+  }
 
 
- let sumt=0 ;
- pricetotal.map(value => {
-    sumt += Number(value);
+
+
+ function removeItem(i,name,tPrice,Q){
+  
+//   useEffect(() => {
+//     setQuantity((prevData) => {
+//       prevData.splice(i, 1);
+//       console.log(prevData)
+//       return prevData
+//     }); 
+// },[]);
+
+  setPriceTotal((prevData) => {
+    const newData = prevData.filter(
+      (data) => data !== tPrice 
+    );
+    return newData
   });
 
-  setpriceTotal(sumt)
-
-
-
-      console.log(priceTotal)
-
-}
-
-
-
- function removeItem(i,name){
-  console.log(name)
+  
   updateApi1((prevData) => {
     const newData = prevData.filter(
       (data) => data.name !== name
@@ -78,6 +106,19 @@ const Cart = () => {
   });
 
  }
+
+
+ 
+ function check_login() {
+  if(localStorage.userinfoLog !== null && localStorage.userinfoLog !== undefined){
+    window.location.replace("Checkout")
+
+  }else{
+    window.location.replace("Login")
+    alert("Please login")
+  }
+
+}
 
   return (
     <>
@@ -94,7 +135,7 @@ const Cart = () => {
 
 
           myArray.map((e,i) => {
-            numarray.push(1)
+           
             return(      
           <div className="s1MyCartInfo">
             
@@ -114,7 +155,7 @@ const Cart = () => {
          
                 <input
                    
-                  onChange={(ev) => changeNum(i,ev.target.value,e.price)}
+                  onChange={(ev) => updateFieldChanged(ev,i,e.price)}
                   style={{ width: "5rem" }}
                   type="number"
                 />
@@ -123,9 +164,9 @@ const Cart = () => {
 
               <div className="priceCancel">
                 <p>
-                  $<span>{e.price * Number(price000[i])}</span>
+                  $<span>{e.price*Number(Quantity[i])}</span>
                 </p>
-                <button className="deletebutton" onClick={()=>removeItem(i,e.name)}>X</button>
+                <button className="px-2 py-1 ms-1 buttonNav" onClick={()=>removeItem(i,e.name,e.price*Number(Quantity[i]),Quantity)  }>delete</button>
               </div>
             </div>
           </div>
@@ -187,7 +228,7 @@ const Cart = () => {
           <div className="CartSection2Price">
             <p>subtotal</p>
             <p>
-              $<span>{priceTotal}</span>
+              $<span>{priceTotalNum}</span>
             </p>
           </div>
 
@@ -198,13 +239,15 @@ const Cart = () => {
           <div className="CartSection2Price">
             <p>total</p>
             <p>
-              <span>{priceTotal}</span>
+              <span>{priceTotalNum}</span>
             </p>
           </div>
+         
 
           <div className="paymentButtons">
-            <button className="checkoutButton">checkout</button>
-            <button className="paypalButton">
+           {/* <Link to="/Checkout"></Link>  */}
+           <button onClick={()=>check_login()} className="checkoutButton ">checkout</button>
+            <button className="paypalButton" >
               <span style={{ color: "#003087" }}>pay</span>
               <span style={{ color: "#009CDE" }}>pal</span> checkout
             </button>

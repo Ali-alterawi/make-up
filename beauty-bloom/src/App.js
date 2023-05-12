@@ -17,6 +17,9 @@ import Cart from "./pages/Product/Cart";
 import CartFeature from "./pages/Product/featureCart";
 import UserProvider from "./pages/Product/ProductContext";
 import Store from "./pages/Store/Store";
+import Checkout from "./pages/Product/Checkout";
+import Confirmation from "./pages/Product/Confirmation";
+
 function App() {
   return (
     <UserProvider>
@@ -25,6 +28,7 @@ function App() {
         <Routes>
           <Route element={<Landing />} path="/" />
           <Route element={<Product />} path="Product" />
+          <Route element={<Confirmation />} path="Confirmation" />
 
           <Route element={<Login />} path="Login" />
           <Route element={<Signup />} path="Signup" />
@@ -32,6 +36,7 @@ function App() {
           <Route element={<ProductFeature />} path="ProductFeature" />
           <Route element={<Cart />} path="Cart" />
           <Route element={<CartFeature />} path="CartFeature" />
+          <Route element={<Checkout />} path="Checkout" />
 
           <Route path="/" />
           <Route element={<Landing />} path="Landing" />

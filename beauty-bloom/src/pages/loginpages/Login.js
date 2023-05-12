@@ -5,8 +5,15 @@ import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { useState ,useEffect} from 'react';
 
+import { useContext } from "react";
+import { UserContext } from "../Product/ProductContext";
+
 
 export default function Login() {
+
+
+const {signState,updatesignState } = useContext(UserContext);
+
     function check_login(email,password) {
         if(localStorage.userinfo !== null && localStorage.userinfo !== undefined){
             let userinfo = [];
@@ -79,8 +86,12 @@ export default function Login() {
                         }
                         if(arrEmail.includes(res.data.email)){
                             let userdata = get_info(res.data.email);
+
+
                             alert(userdata.userEmail);
                             alert("welcome");
+                            window.location.replace("Landing")
+
                         }else{
                             alert('the email '+res.data.email +' not registered before.');
                         }
@@ -108,13 +119,16 @@ export default function Login() {
     
         if(check_login(email,password) == true) {
            let userdata = get_info(email);
+           localStorage.setItem("userinfoLog",JSON.stringify(userdata))
+
            alert(userdata.userEmail);
         alert("welcome");
+        updatesignState("LogOut")
+        localStorage.setItem("userState",JSON.stringify("LogOut"))
+        window.location.replace("Landing")
         }else{
         alert("Error in username or password.");
         }
-      
-    
 
     }
   return (

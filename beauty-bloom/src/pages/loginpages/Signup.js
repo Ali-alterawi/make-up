@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Logo1 from "../Image/logomakeup.png";
 import { useState } from 'react';
 
+
 export default function Signup() {
     const [name, setName] = useState("");
     const [namep, setNamep] = useState("");
@@ -34,7 +35,7 @@ export default function Signup() {
         
             if( validateName(name) && validatePassword(password) && validateEmail(email)&& validatePhone(phone) ){
             alert(`welcome ${name}`)
-            
+            window.location.replace("Login")
             let user={
                 username:name,
                 userPassword:password,

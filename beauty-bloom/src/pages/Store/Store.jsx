@@ -3,7 +3,7 @@ import StoreCard from "../../components/StoreCard";
 import useFetchData from "../../hooks/useFetchData";
 import Pagination from "@mui/material/Pagination";
 
-import { MagnifyingGlass } from "react-loader-spinner";
+import { MagnifyingGlass, Oval } from "react-loader-spinner";
 
 const baseEndpoint = "http://makeup-api.herokuapp.com/api/v1/products.json?";
 
@@ -65,11 +65,11 @@ const Store = () => {
 
   return (
     <div className="min-h-screen bg-primary-color flex flex-col gap-3 py-12 px-6">
-      <span className="font-semibold text-xl">Sort By:</span>
+      <span className="font-semibold text-xl lg:px-24">Sort By:</span>
       <form
         action=""
         onSubmit={handleSubmit}
-        className="flex flex-col lg:flex-row gap-6 "
+        className="flex flex-col lg:flex-row gap-6 lg:px-24"
       >
         <select className="select select-bordered w-full max-w-xs" id="price">
           <option disabled selected value="null">
@@ -108,7 +108,7 @@ const Store = () => {
             <input
               type="text"
               placeholder="Search…"
-              className="input input-bordered w-3/4 flex-shrink-0"
+              className="input input-bordered w-3/4 max-w-xsm flex-shrink-0"
               id="search"
             />
             <button className="btn btn-square" action="" onClick={handleSearch}>
@@ -130,20 +130,33 @@ const Store = () => {
           </div>
         </div>
       </form>
-      <div className=" grid grid-cols-1 max-w sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-3 gap-y-3">
+      <div className=" grid grid-cols-1 max-w sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-3 gap-y-3 lg:px-24 mx-auto">
         {error && <div>{error}</div>}
         {isLoading && (
-          <MagnifyingGlass
-            visible={true}
-            height="80"
-            width="80"
-            ariaLabel="MagnifyingGlass-loading"
-            wrapperStyle={{}}
-            wrapperClass="MagnifyingGlass-wrapper"
-            glassColor="#c0efff"
-            color="#be908c"
-          />
-        )}
+            <MagnifyingGlass
+              visible={true}
+              height="80"
+              width="80"
+              ariaLabel="MagnifyingGlass-loading"
+              wrapperStyle={{}}
+              wrapperClass="MagnifyingGlass-wrapper"
+              glassColor="#c0efff"
+              color="#be908c"
+            />
+          ) && (
+            <Oval
+              height={80}
+              width={80}
+              color="#be908c"
+              wrapperStyle={{}}
+              wrapperClass=""
+              visible={true}
+              ariaLabel="oval-loading"
+              secondaryColor="FCC8D1"
+              strokeWidth={2}
+              strokeWidthSecondary={2}
+            />
+          )}
         {!isLoading &&
           slicedArray.map((element) => {
             console.log(slicedArray);
